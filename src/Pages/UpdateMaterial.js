@@ -17,13 +17,12 @@ export default function UpdateMaterial({
 
   const { checked, handleCheckbox } = useCheckbox(checkboxes);
 
-
   const materialId = material.material_id;
 
   const updateMaterial = async (e) => {
     e.preventDefault();
     try {
-//graphQL api call 
+      //graphQL api call
       //setMessage(response.data.message);
       setShow(false);
     } catch (err) {

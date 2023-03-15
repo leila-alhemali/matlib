@@ -30,28 +30,31 @@ export default function NewMaterial() {
       },
     };
     try {
-     //mutate data (post req) to graphQL API
-      setMessage(
-        //the message returned from the graphQL api
-      );
-      
+      //mutate data (post req) to graphQL API
+      setMessage();
+      //the message returned from the graphQL api
     } catch (err) {
       setMessage(err.response.data.message);
     } finally {
-      setFormData(initialMaterial)
+      setFormData(initialMaterial);
     }
   }
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    setMessage("Please stay on this page while we add the material to the database");
+    setMessage(
+      "Please stay on this page while we add the material to the database"
+    );
     await postFormData(formData);
   };
 
   return (
     <div className="MaterialFormContainer">
-      {message ? <p className="Message">{message}</p> :
-      <h5>Submit a new material to the database.</h5>}
+      {message ? (
+        <p className="Message">{message}</p>
+      ) : (
+        <h5>Submit a new material to the database.</h5>
+      )}
       <form className="MaterialForm">
         <label>
           Name of Material
@@ -124,10 +127,17 @@ export default function NewMaterial() {
         </div>
         <label for="image">
           Upload a photo
-          <input className="" type="file" name="image" onChange={handleImageUpload} />
+          <input
+            className=""
+            type="file"
+            name="image"
+            onChange={handleImageUpload}
+          />
         </label>
       </form>
-      <button className="Button" onClick={handleSubmit}>Submit Material</button>
+      <button className="Button" onClick={handleSubmit}>
+        Submit Material
+      </button>
     </div>
   );
 }

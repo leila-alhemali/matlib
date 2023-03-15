@@ -1,13 +1,13 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import Material from "../MaterialCard";
-import useMessage from "../../Hooks/useMessage";
+import Material from "../Components/MaterialCard";
+import useMessage from "../Hooks/useMessage";
 
 
 const Materials = () => {
-  const [materials, setMaterials] = useState();
+  const [materials] = useState();
 
-  const { message, setMessage } = useMessage();
+  const { message } = useMessage();
 
 
   useEffect(() => {

@@ -1,0 +1,14 @@
+{
+  "resourceName": "matlibImages",
+  "policyUUID": "348d9451",
+  "bucketName": "matlibb75901e6a3db4b4b855891cedfbacd46",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

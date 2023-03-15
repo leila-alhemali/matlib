@@ -13,9 +13,8 @@ const initialRegister = {
 
 export default function Register(props) {
   const [errors, setErrors] = useState({});
-  const { formData, handleInputChange } = useForm(initialRegister)
-  const { message, setMessage } = useMessage()
-
+  const { formData, handleInputChange } = useForm(initialRegister);
+  const { message, setMessage } = useMessage();
 
   const submitRegistration = () => {
     const newMember = {
@@ -30,23 +29,22 @@ export default function Register(props) {
     //   .post("/auth/register", newMember)
     //   .then((resp) => {
     //     console.log("message", resp.data)
-        
+
     //     setMessage(resp.data.message);
     //   })
-      // .catch((err) => {
-      //   console.log(err);
-      //   //username already taken error
-      // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   //username already taken error
+    // })
   };
 
   //this function doesn't work right yet. If it puts up the error message, the message is displayed until the form is submitted instead of when the error is fixed
-  //maybe set the errors to an empty string on each click. 
+  //maybe set the errors to an empty string on each click.
   const validate = () => {
-
     let formIsValid = true;
     //there are different options for the mailFormat regex. This one is working (7/20/2022)
     let mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
-    
+
     if (
       !formData.username ||
       !formData.password ||
@@ -66,7 +64,7 @@ export default function Register(props) {
     if (!formData.email.match(mailFormat)) {
       formIsValid = false;
       setErrors({ ...errors, email: "Email must be valid" });
-    } 
+    }
     return formIsValid;
   };
 
@@ -81,9 +79,12 @@ export default function Register(props) {
   return (
     <div>
       <h2>Welcome!</h2>
-      <p>Please fill out the form below for access to our community digital Materials Library.</p>
+      <p>
+        Please fill out the form below for access to our community digital
+        Materials Library.
+      </p>
       <p>{message}</p>
-      <form className="RegisterForm" >
+      <form className="RegisterForm">
         <div className="ErrorMsg">{errors.emptyField}</div>
         <input
           name="username"
@@ -130,7 +131,9 @@ export default function Register(props) {
           onChange={handleInputChange}
         />
         <div className="ErrorMsg">{errors.email}</div>
-        <button onClick={onSubmit} className="RegisterButton">Register New User!</button>
+        <button onClick={onSubmit} className="RegisterButton">
+          Register New User!
+        </button>
       </form>
     </div>
   );

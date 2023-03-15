@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import Material from "../MaterialCard";
-import Dialog from "../Dialog";
-import useDialog from "../../Hooks/useDialog";
-import UpdateMaterial from "../UpdateMaterial";
+import Material from "../Components/MaterialCard";
+import Dialog from "../Components/Dialog";
+import useDialog from "../Hooks/useDialog";
+import UpdateMaterial from "./UpdateMaterial";
 import { Link } from "react-router-dom"
 
 export default function MyMaterials() {

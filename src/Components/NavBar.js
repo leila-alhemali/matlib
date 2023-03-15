@@ -25,7 +25,7 @@ export default function Navbar() {
         </CustomLink>
         <CustomLink
           onClick={updateMessage}
-          //  to={id ? `${id}/your-materials` : `/materials`}
+           to={1 ? `${1}/your-materials` : `/materials`}
         >
           My Materials
         </CustomLink>
@@ -33,7 +33,6 @@ export default function Navbar() {
           New Material
         </CustomLink>
        {/* re-add signin changing to signout when a user is signed in  */}
-        )}
       </ul>
     </nav>
   );
