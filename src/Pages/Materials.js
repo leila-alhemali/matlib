@@ -1,21 +1,35 @@
 import { useState, useEffect } from "react";
-
+import { API, Storage } from "aws-amplify"
 import Material from "../Components/MaterialCard";
 import useMessage from "../Hooks/useMessage";
 
+import { listMaterials } from "../graphql/queries"
 
 const Materials = () => {
-  const [materials] = useState();
+  const [materials, setMaterials] = useState([]);
 
   const { message } = useMessage();
 
 
   useEffect(() => {
-    const getMaterials = async () => {
-     //GraphQL Fetch materials here
-    };
-    getMaterials();
+    fetchMaterials()
   }, []);
+
+  async function fetchMaterials() {
+    const apiData = await API.graphql({ query: listMaterials })
+    const materialsFromAPI = apiData.data.listMaterials.items;
+    await Promise.all(
+      materialsFromAPI.map(async (material) => {
+        if (material.image) {
+          const url = await Storage.get(material.name);
+          material.image = url
+        }
+        return material
+      })
+    );
+    setMaterials(materialsFromAPI)
+  }
+
 
   return (
     <article>
@@ -28,12 +42,12 @@ const Materials = () => {
             {materials.map((material) => (
               <Material
                 key={material.material_id}
-                item={material.material_name}
-                description={material.material_description}
-                amount={material.material_unit}
-                phone={material.phone_number}
+                item={material.name}
+                description={material.description}
+                amount={material.amount}
+                phone={material.phoneNumber}
                 email={material.email}
-                image={material.image_name}
+                image={material.image}
               />
             ))}
           </ul>

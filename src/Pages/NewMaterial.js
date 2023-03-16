@@ -2,6 +2,15 @@ import React from "react";
 import useForm from "../Hooks/useForm";
 import useCheckbox from "../Hooks/useCheckbox";
 import useMessage from "../Hooks/useMessage";
+import { View, Button } from "@aws-amplify/ui-react";
+
+import { useContext } from "react";
+import { UserContext } from "../App";
+
+import { API, Storage } from "aws-amplify";
+
+import { createMaterial as createMaterialMutation } from "../graphql/mutations";
+
 
 const initialMaterial = {
   material_name: "",
@@ -18,35 +27,41 @@ const checkboxes = {
 };
 
 export default function NewMaterial() {
+  //do this when I want to access the user
+  const user = useContext(UserContext);
+
+
   const { formData, handleInputChange, handleImageUpload, setFormData } =
     useForm(initialMaterial);
   const { checked, handleCheckbox } = useCheckbox(checkboxes);
-  const { message, setMessage } = useMessage();
+  const { message, setMessage } = useMessage("");
 
-  async function postFormData(formData) {
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
+  async function createMaterial(event) {
+    event.preventDefault();
+    //message context is not working
+    // setMessage("Please stay on this page while we add the material to the database");
+    const form = new FormData(event.target);
+    const image = form.get("image");
+    const data = {
+      name: form.get("material_name"),
+      member: user.username,
+      description: form.get("material_description"),
+      amount: form.get("material_unit"),
+      phoneNumber: form.get("phone_number"),
+      email: user.attributes.email,
+      image: image.name,
     };
-    try {
-      //mutate data (post req) to graphQL API
-      setMessage();
-      //the message returned from the graphQL api
-    } catch (err) {
-      setMessage(err.response.data.message);
-    } finally {
-      setFormData(initialMaterial);
+    if (!!data.image) {
+      await Storage.put(data.name, image);
     }
+    console.log(data);
+    await API.graphql({
+      query: createMaterialMutation,
+      variables: { input: data },
+    });
+    event.target.reset();
+    console.log("function executed");
   }
-
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    setMessage(
-      "Please stay on this page while we add the material to the database"
-    );
-    await postFormData(formData);
-  };
 
   return (
     <div className="MaterialFormContainer">
@@ -55,7 +70,7 @@ export default function NewMaterial() {
       ) : (
         <h5>Submit a new material to the database.</h5>
       )}
-      <form className="MaterialForm">
+      <form className="MaterialForm" onSubmit={createMaterial}>
         <label>
           Name of Material
           <input
@@ -106,38 +121,18 @@ export default function NewMaterial() {
             ) : (
               ""
             )}
-            <label for="email">email</label>
-            <input
-              name="email"
-              type="checkbox"
-              onChange={() => handleCheckbox("email", checked.email)}
-            ></input>
-            {checked.email === true ? (
-              <input
-                name="email"
-                type="text"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-              ></input>
-            ) : (
-              ""
-            )}
           </label>
         </div>
-        <label for="image">
-          Upload a photo
-          <input
-            className=""
-            type="file"
-            name="image"
-            onChange={handleImageUpload}
-          />
-        </label>
+        <View
+          name="image"
+          as="input"
+          type="file"
+          style={{ alignSelf: "end" }}
+        />
+        <button className="Button" type="submit">
+          Submit Material
+        </button>
       </form>
-      <button className="Button" onClick={handleSubmit}>
-        Submit Material
-      </button>
     </div>
   );
 }

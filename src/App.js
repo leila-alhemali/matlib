@@ -12,7 +12,6 @@ import {
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 
-
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Components/Layout";
 import Register from "./Pages/Register";
@@ -21,26 +20,27 @@ import Materials from "./Pages/Materials";
 import NewMaterial from "./Pages/NewMaterial";
 import MyMaterials from "./Pages/MyMaterials";
 
-const App = ({ signOut }) => {
+export const UserContext = React.createContext();
 
-
+const App = ({ signOut, user }) => {
   return (
     <View className="App">
-     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="register" element={<Register />} />
-        {/* Private Routes */}
-        <Route>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path={`${1}/your-materials`} element={<MyMaterials />} />
-          <Route path="newmaterial" element={<NewMaterial />} />
-          <Route path="materials" element={<Materials />} />
-        </Route>
-      </Route>
-    </Routes>
+      <UserContext.Provider value={user}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="register" element={<Register />} />
+            {/* Private Routes */}
+            <Route>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path={`${user.username}/your-materials`} element={<MyMaterials />} />
+              <Route path="newmaterial" element={<NewMaterial />} />
+              <Route path="materials" element={<Materials />} />
+            </Route>
+          </Route>
+        </Routes>
+      </UserContext.Provider>
       <Button onClick={signOut}>Sign Out</Button>
-
       <a href="/register">Create New User</a> |{" "}
       <button className="Button">Let's Go!</button>
     </View>
@@ -48,4 +48,4 @@ const App = ({ signOut }) => {
 };
 
 //replace - App - export with - withAuthenticator(App) - to use auth
-export default  withAuthenticator(App);
+export default withAuthenticator(App);

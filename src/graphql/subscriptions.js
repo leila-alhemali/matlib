@@ -37,3 +37,51 @@ export const onDeleteNote = /* GraphQL */ `
     }
   }
 `;
+export const onCreateMaterial = /* GraphQL */ `
+  subscription OnCreateMaterial($filter: ModelSubscriptionMaterialFilterInput) {
+    onCreateMaterial(filter: $filter) {
+      id
+      member
+      name
+      description
+      amount
+      phoneNumber
+      email
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMaterial = /* GraphQL */ `
+  subscription OnUpdateMaterial($filter: ModelSubscriptionMaterialFilterInput) {
+    onUpdateMaterial(filter: $filter) {
+      id
+      member
+      name
+      description
+      amount
+      phoneNumber
+      email
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMaterial = /* GraphQL */ `
+  subscription OnDeleteMaterial($filter: ModelSubscriptionMaterialFilterInput) {
+    onDeleteMaterial(filter: $filter) {
+      id
+      member
+      name
+      description
+      amount
+      phoneNumber
+      email
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;

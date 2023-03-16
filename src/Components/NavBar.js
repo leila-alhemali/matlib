@@ -1,18 +1,22 @@
 import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
+import { useContext } from "react"
 
 import useMessage from "../Hooks/useMessage";
+import { UserContext } from "../App";
 
 export default function Navbar() {
 
   const {  setMessage, removeMessage } = useMessage();
 
 
-
+  const user = useContext(UserContext)
+  console.log(user)
 
   const updateMessage = () => { 
     setMessage(null)
   };
+
 
   return (
     <nav className="nav">
@@ -25,7 +29,7 @@ export default function Navbar() {
         </CustomLink>
         <CustomLink
           onClick={updateMessage}
-           to={1 ? `${1}/your-materials` : `/materials`}
+           to={user.username ? `${user.username}/your-materials` : `/materials`}
         >
           My Materials
         </CustomLink>

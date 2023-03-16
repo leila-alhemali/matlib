@@ -8,3 +8,14 @@ type Note @model @auth(rules: [ { allow: public } ] ){
   description: String
   image: String
 }
+
+type Material @model @auth(rules: [ { allow: public }  ] ){
+  id: ID!
+  member: String!
+  name: String!
+  description: String!
+  amount: String!
+  phoneNumber: String
+  email: String!
+  image: String
+}

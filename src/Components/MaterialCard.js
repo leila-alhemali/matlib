@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Image } from "@aws-amplify/ui-react"
+
 export default function Material({
   item,
   description,
@@ -17,10 +19,10 @@ export default function Material({
           ""
         ) : (
           // eslint-disable-next-line jsx-a11y/img-redundant-alt
-          <img
+          <Image src={image}
             className="MaterialImage"
             alt={`${item}'s image cannot be retrieved`}
-          ></img>
+          ></Image>
         )}
         <p>{description}</p>
         <p>{amount}</p>
