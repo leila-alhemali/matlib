@@ -4,6 +4,7 @@ import { useContext } from "react"
 
 import useMessage from "../Hooks/useMessage";
 import { UserContext } from "../App";
+import { SignOutContext } from "../App";
 
 export default function Navbar() {
 
@@ -11,6 +12,7 @@ export default function Navbar() {
 
 
   const user = useContext(UserContext)
+  const signOut = useContext(SignOutContext)
   console.log(user)
 
   const updateMessage = () => { 
@@ -36,7 +38,9 @@ export default function Navbar() {
         <CustomLink onClick={updateMessage} to="/newMaterial">
           New Material
         </CustomLink>
-       {/* re-add signin changing to signout when a user is signed in  */}
+        <CustomLink onClick={signOut} to="/">
+          Sign out
+        </CustomLink>
       </ul>
     </nav>
   );

@@ -99,6 +99,23 @@ input:focus {
   border: 1px solid rgba(0, 0, 0, 1);
 }
 
+.Button:hover,
+.Button:focus {
+  color: black;
+  background-color: #d2ff8a;
+  border: 1px solid rgba(0, 0, 0, 1);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.Button:hover {
+  transform: translateY(-1px);
+}
+
+.Button:active {
+  background-color: #c85000;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
 .HomeBody {
   margin-left: 20%;
   margin-right: 20%;
@@ -196,6 +213,7 @@ input:focus {
   margin: 2%;
   padding: 1%;
   background-color: #7a7a7a;
+  border-radius: 20px;
 }
 
 .MyMaterialContainer {
@@ -206,8 +224,8 @@ input:focus {
   margin: 2%;
   padding: 1%;
   background-color: #7a7a7a;
+  
 }
-
 
 .MaterialHeader {
   margin: 1%;
@@ -221,6 +239,7 @@ input:focus {
   height: 300px;
   width: 300px;
   padding: 2%;
+  border-radius: 20px;
 }
 
 .MaterialFormContainer {
@@ -243,4 +262,23 @@ input:focus {
 .ContactContainer {
   display: flex;
   flex-direction: row;
+}
+
+.CheckBoxLabel {
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+}
+
+
+
+.CheckBox {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin:0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
 }

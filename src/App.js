@@ -21,14 +21,16 @@ import NewMaterial from "./Pages/NewMaterial";
 import MyMaterials from "./Pages/MyMaterials";
 
 export const UserContext = React.createContext();
+export const SignOutContext = React.createContext();
 
 const App = ({ signOut, user }) => {
   return (
     <View className="App">
       <UserContext.Provider value={user}>
+      <SignOutContext.Provider value={signOut}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="register" element={<Register />} />
             {/* Private Routes */}
             <Route>
@@ -39,10 +41,9 @@ const App = ({ signOut, user }) => {
             </Route>
           </Route>
         </Routes>
+        </SignOutContext.Provider>
       </UserContext.Provider>
-      <Button onClick={signOut}>Sign Out</Button>
-      <a href="/register">Create New User</a> |{" "}
-      <button className="Button">Let's Go!</button>
+
     </View>
   );
 };

@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Material from "../Components/MaterialCard";
 import Dialog from "../Components/Dialog";
 import useDialog from "../Hooks/useDialog";
 import UpdateMaterial from "./UpdateMaterial";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { UserContext } from "../App";
+import { getMaterial, listMaterials } from "../graphql/queries";
+
+import { API, Storage, graphqlOperation } from "aws-amplify";
 
 export default function MyMaterials() {
+  const user = useContext(UserContext);
+
   const [myMaterials, setMyMaterials] = useState([]);
   const [activeMaterial, setActiveMaterial] = useState({});
 
@@ -19,16 +25,30 @@ export default function MyMaterials() {
   } = useDialog(activeMaterial);
   const [showUpdate, setShowUpdate] = useState(false);
 
-
   useEffect(() => {
-    const getMyMaterials = async () => {
-     //graphQL query user's materials
-    };
-    getMyMaterials();
+    fetchMaterials();
   }, [activeMaterial]);
 
 
-  
+  async function fetchMaterials() {
+    const apiData = await API.graphql({
+      query: listMaterials,
+      variables: {filter: {member: {eq: user.username}}},
+    });
+    const materialsFromAPI = apiData.data.listMaterials.items;
+    await Promise.all(
+      materialsFromAPI.map(async (material) => {
+        if (material.image) {
+          const url = await Storage.get(material.name);
+          material.image = url;
+        }
+        return material;
+      })
+    );
+    console.log(materialsFromAPI);
+    setMyMaterials(materialsFromAPI);
+  }
+
   const handleDeleteClick = (material) => {
     setActiveMaterial(material);
     setShowDialog(true);
@@ -48,19 +68,25 @@ export default function MyMaterials() {
         <ul className="MaterialsContainer">
           {myMaterials.map((material) => (
             <li className="MaterialContainer" key={material.material_id}>
-              <Material className="MyMaterialContainer"
-                item={material.material_name}
-                description={material.material_description}
-                amount={material.material_unit}
-                phone={material.phone_number}
+              <Material
+                item={material.name}
+                description={material.description}
+                amount={material.amount}
+                phone={material.phoneNumber}
                 email={material.email}
-                image={material.image_name}
+                image={material.image}
               />
               <div className="ButtonContainer">
-                <button className="Button" onClick={() => handleUpdateClick(material)}>
+                <button
+                  className="Button"
+                  onClick={() => handleUpdateClick(material)}
+                >
                   Update
                 </button>
-                <button  className="Button" onClick={() => handleDeleteClick(material)}>
+                <button
+                  className="Button"
+                  onClick={() => handleDeleteClick(material)}
+                >
                   Delete
                 </button>
               </div>
@@ -69,7 +95,8 @@ export default function MyMaterials() {
         </ul>
       ) : (
         <p>
-          You have no materials to display. Add materials to the database <Link to="/newmaterial">here</Link>.
+          You have no materials to display. Add materials to the database{" "}
+          <Link to="/newmaterial">here</Link>.
         </p>
       )}
       <Dialog show={showDialog} cancel={cancelDelete} confirm={confirmDelete} />

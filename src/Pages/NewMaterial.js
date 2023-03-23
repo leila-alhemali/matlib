@@ -11,7 +11,6 @@ import { API, Storage } from "aws-amplify";
 
 import { createMaterial as createMaterialMutation } from "../graphql/mutations";
 
-
 const initialMaterial = {
   material_name: "",
   material_description: "",
@@ -29,7 +28,6 @@ const checkboxes = {
 export default function NewMaterial() {
   //do this when I want to access the user
   const user = useContext(UserContext);
-
 
   const { formData, handleInputChange, handleImageUpload, setFormData } =
     useForm(initialMaterial);
@@ -72,7 +70,7 @@ export default function NewMaterial() {
       )}
       <form className="MaterialForm" onSubmit={createMaterial}>
         <label>
-          Name of Material
+          Name of material
           <input
             name="material_name"
             type="text"
@@ -103,13 +101,27 @@ export default function NewMaterial() {
         </label>
         <div>
           <label>
-            Contact Method: Select all that apply<br></br>
-            <label for="phone">phone</label>
+            Contact Method: <br></br>
+            <label for="email">Email</label>
             <input
-              name="phone"
-              type="checkbox"
-              onChange={() => handleCheckbox("phone", checked.phone)}
+              name="email"
+              type="text"
+              placeholder={user.attributes.email}
+              value={formData.email}
+              onChange={handleInputChange}
             ></input>
+            <label for="phone">Include Phone Number?</label>
+            <div style={{ display: "flex", border: "2px solid black" }}>
+              <label className="CheckBoxLabel">
+                Yes
+                <input
+                  className="CheckBox"
+                  name="phone"
+                  type="checkbox"
+                  onChange={() => handleCheckbox("phone", checked.phone)}
+                />
+              </label>
+            </div>
             {checked.phone === true ? (
               <input
                 name="phone_number"
